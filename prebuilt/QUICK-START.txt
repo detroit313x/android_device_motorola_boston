@@ -1,0 +1,53 @@
+QUICK START GUIDE - PBRP BUILD FOR MOTOROLA BOSTON
+===================================================
+
+STEP 1: INITIAL SETUP (Run once)
+--------------------------------
+mkdir -p ~/pbrp-build
+cd ~/pbrp-build
+repo init -u https://github.com/PitchBlackRecoveryProject/manifest -b android-12.1
+repo sync -c -j$(nproc --all) --force-sync --no-clone-bundle --no-tags
+
+STEP 2: ADD DEVICE TREE
+-----------------------
+git clone https://github.com/detroit313x/android_device_motorola_boston.git device/motorola/boston -b pbrp-build-setup
+
+STEP 3: BUILD
+-------------
+cd ~/pbrp-build
+source build/envsetup.sh
+lunch twrp_boston-user
+mka recoveryimage -j$(nproc --all)
+
+STEP 4: LOCATE OUTPUT
+---------------------
+Output files are in: out/target/product/boston/
+- recovery.img (main file)
+- boot.img
+- vendor_boot.img
+
+DEVICE INFO
+-----------
+Device:      Motorola Boston
+Model:       XT2419 (Moto G Stylus 5G 2024)
+Platform:    Snapdragon 765 (parrot)
+Recovery:    TWRP 12.1 / PBRP
+Display:     1080x2400 (403 DPI)
+
+COMMON COMMANDS
+---------------
+Clean build:           mka clean
+Rebuild recovery:      mka recoveryimage
+Check build status:    make status
+View build logs:       cat out/verbose.log
+
+TROUBLESHOOTING
+---------------
+Out of space?          Increase job count: mka recoveryimage -j4
+Build fails?           Try: mka clean && mka recoveryimage
+Permission issues?     sudo chown -R $USER:$USER out/
+
+For detailed guide, see PBRP-SETUP.md
+For build script, run: bash PBRP-BUILD.sh
+
+Built with ❤️ by detroit313x
